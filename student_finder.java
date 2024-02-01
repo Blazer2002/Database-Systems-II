@@ -20,6 +20,12 @@ public static void main (String args[]) throws SQLException, IOException
     passwrd = readEntry("Enter password: ");
     Connection conn =
     DriverManager.getConnection("jdbc:oracle:oci8:"+dbacct+"/"+passwrd);
+    /*
+     * Student attributes used: Student_number, Name
+     * Grade_Report attributes used: Student_Number, Section_Identifier
+     * Section attributes used: Section_Identifier, Course_NUmber
+     * Course attributes used: Course_Number
+     */
     String stmt1 = 
     "select G.Grade, C.Credit_hours
     from STUDENT S, GRADE_REPORT G, SECTION SEC, COURSE C
