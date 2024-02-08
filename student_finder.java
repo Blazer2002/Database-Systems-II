@@ -30,12 +30,14 @@ class CalGPA {
          */
         String stmt1 = "select G.Grade, C.Credit_hours from STUDENT S, GRADE_REPORT G, SECTION SEC, COURSE C where G.Student_number=S.Student_number AND G.Section_identifier=SEC.Section_identifier AND SEC.Course_number=C.Course_number AND S.Name=?";
 
-        PreparedStatement p = conn.prepareStatement(stmt1);
         System.out.print("\nPlease enter your name: ");
         name = input.next();
+
+        PreparedStatement p = conn.prepareStatement(stmt1);
         p.clearParameters();
         p.setString(1, name);
         ResultSet r = p.executeQuery();
+        
         double count = 0, sum = 0, avg = 0;
         while (r.next()) {
             grade = r.getString(1).charAt(0);
@@ -69,6 +71,10 @@ class CalGPA {
 
         avg = sum / count;
         System.out.println("Student named " + name + " has a grade point average " + avg + ".");
+        
         r.close();
+        conn.close();
+        p.close();
+        input.close();
     }
 }
