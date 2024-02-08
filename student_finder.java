@@ -1,18 +1,26 @@
 import java.io.*;
 import java.sql.*;
+import java.util.Scanner;
 
 class CalGPA {
     public static void main(String args[]) throws SQLException, IOException {
+        
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         } catch (ClassNotFoundException x) {
             System.out.println("Driver could not be loaded.");
         }
+
         String dbacct, passwrd, name;
         char grade;
         int credit;
-        dbacct = readEntry("Enter database account: ");
-        passwrd = readEntry("Enter password: ");
+
+        Scanner input  = new Scanner(System.in);
+        System.out.print("Enter database account: ");
+        dbacct = input.next();
+        System.out.print("\nEnter password: ");
+        passwrd = input.next();
+
         Connection conn = DriverManager.getConnection("jdbc:oracle:oci8:" + dbacct + "/" + passwrd);
         /*
          * Student attributes used: Student_number, Name
@@ -23,14 +31,15 @@ class CalGPA {
         String stmt1 = "select G.Grade, C.Credit_hours from STUDENT S, GRADE_REPORT G, SECTION SEC, COURSE C where G.Student_number=S.Student_number AND G.Section_identifier=SEC.Section_identifier AND SEC.Course_number=C.Course_number AND S.Name=?";
 
         PreparedStatement p = conn.prepareStatement(stmt1);
-        name = readEntry("Please enter your name: ");
+        System.out.print("\nPlease enter your name: ");
+        name = input.next();
         p.clearParameters();
         p.setString(1, name);
         ResultSet r = p.executeQuery();
         double count = 0, sum = 0, avg = 0;
         while (r.next()) {
-            grade = r.getChar(1);
-            credit = r.getInteger(2);
+            grade = r.getString(1).charAt(0);
+            credit = r.getInt(2);
             switch (grade) {
                 case 'A':
                     sum = sum + (4 * credit);
