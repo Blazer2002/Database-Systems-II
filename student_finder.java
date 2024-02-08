@@ -1,7 +1,7 @@
 import java.io.*;
 import java.sql.*;
 
-class calGPA {
+class CalGPA {
     public static void main(String args[]) throws SQLException, IOException {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -9,7 +9,7 @@ class calGPA {
             System.out.println("Driver could not be loaded.");
         }
         String dbacct, passwrd, name;
-        Char grade;
+        char grade;
         int credit;
         dbacct = readEntry("Enter database account: ");
         passwrd = readEntry("Enter password: ");
@@ -20,8 +20,7 @@ class calGPA {
          * Section attributes used: Section_Identifier, Course_NUmber
          * Course attributes used: Course_Number
          */
-        String stmt1 = new String(
-                "select G.Grade, C.Credit_hours from STUDENT S, GRADE_REPORT G, SECTION SEC, COURSE C where G.Student_number=S.Student_number AND G.Section_identifier=SEC.Section_identifier AND SEC.Course_number=C.Course_number AND S.Name=?");
+        String stmt1 = "select G.Grade, C.Credit_hours from STUDENT S, GRADE_REPORT G, SECTION SEC, COURSE C where G.Student_number=S.Student_number AND G.Section_identifier=SEC.Section_identifier AND SEC.Course_number=C.Course_number AND S.Name=?";
 
         PreparedStatement p = conn.prepareStatement(stmt1);
         name = readEntry("Please enter your name: ");
@@ -54,13 +53,13 @@ class calGPA {
                     count = count + 1;
                     break;
                 default:
-                    println("This grade " + grade + " will not be calculated.");
+                    System.out.println("This grade " + grade + " will not be calculated.");
                     break;
             }
         }
-        ;
+
         avg = sum / count;
-        System.out.printline("Student named " + name + " has a grade point average " + avg + ".");
+        System.out.println("Student named " + name + " has a grade point average " + avg + ".");
         r.close();
     }
 }
